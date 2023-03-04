@@ -1,0 +1,26 @@
+name: 'Get Repo Info'
+description: 'Get Git Repo Info from URL and Branch'
+inputs:
+  url:
+    required: true
+  branch:
+    required: true
+  folder:
+    required: true
+outputs:
+  sha:
+    description: "Repo SHA"
+    value: ${{ steps.set.outputs.sha }}
+runs:
+  using: "composite"
+  steps:
+    - id: set
+      shell: bash
+      env:
+        URL:    ${{ inputs.url }}
+        BRANCH: ${{ inputs.branch }}
+        DEST:   ${{ inputs.folder }}
+      run: |
+        git clone $URL -b $BRANCH $DEST
+        SHA=$(cd $DEST && git rev-parse HEAD)
+        echo "sha=$SHA" >> $GITHUB_OUTPUT

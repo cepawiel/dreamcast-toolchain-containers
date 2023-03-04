@@ -1,0 +1,68 @@
+[
+    {
+        "name" : "raw",
+        "type": "raw",
+        "kos" : {
+            "url" : "https://github.com/KallistiOS/KallistiOS",
+            "branch" : "master"
+        },
+        "toolchains":[
+            {
+                "tag" : "gcc4",
+                "config" : "config.mk.legacy.sample",
+                "latest" : false
+            },
+            {
+                "tag" : "gcc9",
+                "config" : "config.mk.stable.sample",
+                "latest" : true
+            },
+            {
+                "tag" : "gcc12",
+                "config" : "config.mk.testing.sample",
+                "latest" : false
+            }
+        ]
+    },
+    {
+        "name" : "kos",
+        "type": "kos",
+        "kos" : {
+            "url" : "https://github.com/KallistiOS/KallistiOS",
+            "branch" : "master"
+        },
+        "ports" : {
+            "url" : "https://github.com/KallistiOS/kos-ports",
+            "branch" : "master"
+        },
+        "toolchains":[
+            {
+                "tag" : "gcc4",
+                "config" : "config.mk.legacy.sample",
+                "latest" : false
+            },
+            {
+                "tag" : "gcc9",
+                "config" : "config.mk.stable.sample",
+                "latest" : true
+            },
+            {
+                "tag" : "gcc12",
+                "config" : "config.mk.testing.sample",
+                "latest" : false
+            }
+        ],
+        "targets" : [
+            {
+                "tag" : "dreamcast",
+                "kos_subarch" : "pristine",
+                "build_examples" : true
+            },
+            {
+                "tag" : "naomi",
+                "kos_subarch" : "naomi",
+                "build_examples" : false
+            }
+        ]
+    }
+]

@@ -1,0 +1,60 @@
+on: 
+  schedule:
+    - cron:  '00 15 * * *'
+  # [push]
+  # push:
+    # paths:
+    #   - .github/workflows/on_push.yml
+    #   - .github/workflows/build_toolchain.yml
+    #   - .github/actions/**
+    #   - build.json
+    #   - build.json
+    #   - kos_build/**
+name: Container Builds
+run-name: Container Builds
+jobs:
+  # 1) Generate Matrix and other setup vars
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    outputs:
+      github-token-exists: ${{ steps.check-gh-token.outputs.defined }}
+      builds: ${{ steps.set.outputs.builds }}
+    steps:
+        - uses: actions/checkout@v3
+
+        - id: check-gh-token
+          env:
+            GH_TOK: ${{ secrets.GITHUB_TOKEN }}
+          if: "${{ env.GH_TOK != '' }}"
+          run: echo "defined=true" >> $GITHUB_OUTPUT
+
+        - id: set
+          run: |
+            ./gen_build_matrix.py | jq -c
+            echo "builds=$(./gen_build_matrix.py | jq -c)" >> $GITHUB_OUTPUT
+
+  # 2) Builds Toolchains (and KOS + KOS-Ports)
+  # TODO: Build Alternative Archs (x86_64, arm64)
+  for-each-toolchain-builds:
+    name: Toolchain Builds ${{ matrix.build.toolchain.tag }} for ${{ matrix.build.name }}
+    needs: [setup]
+    strategy:
+      fail-fast: false
+      matrix:
+        build: ${{ fromJson(needs.setup.outputs.builds) }}
+
+    uses: ./.github/workflows/build_toolchain.yml
+    with:
+      repo_url:     ${{ matrix.build.kos.url }}
+      repo_branch:  ${{ matrix.build.kos.branch }}
+      name:         ${{ matrix.build.name }}
+      sha:          ${{ matrix.build.kos.sha }}
+      build_type:   ${{ matrix.build.type }}
+      config_file:  ${{ matrix.build.toolchain.config }}
+      tag:          ${{ matrix.build.toolchain.tag }}
+      latest:       ${{ matrix.build.toolchain.latest }}
+
+  # TODO: Pull KOS & KOS-Ports Container Builds out of toolchain build
+  #       so that both Dreamcast&NAOMI can be built.
+  # TODO: Test Containers & Retag to Latest if Test's Pass
