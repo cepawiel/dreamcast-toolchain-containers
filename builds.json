@@ -8,11 +8,6 @@
         },
         "toolchains":[
             {
-                "tag" : "gcc4",
-                "config" : "config.mk.legacy.sample",
-                "latest" : false
-            },
-            {
                 "tag" : "gcc9",
                 "config" : "config.mk.stable.sample",
                 "latest" : true

@@ -8,6 +8,7 @@ function raw {
         -e "s/makejobs=-j2/makejobs=-j$(nproc)/g" \
         -e '/auto_fixup_sh4_newlib/s/^#//' \
         -e "s/thread_model=kos/thread_model=single/" \
+        -e '/use_kos_patches/s/^#//' \
         /opt/toolchains/dc/kos/utils/dc-chain/config.mk
 }
 
