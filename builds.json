@@ -13,7 +13,7 @@
                 "latest" : true
             },
             {
-                "tag" : "gcc12",
+                "tag" : "gcc13",
                 "config" : "config.mk.testing.sample",
                 "latest" : false
             }
@@ -42,7 +42,7 @@
                 "latest" : true
             },
             {
-                "tag" : "gcc12",
+                "tag" : "gcc13",
                 "config" : "config.mk.testing.sample",
                 "latest" : false
             }
