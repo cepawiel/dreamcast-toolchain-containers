@@ -2,7 +2,7 @@ on:
   schedule:
     - cron:  '00 15 * * *'
   # [push]
-  # push:
+  push:
     # paths:
     #   - .github/workflows/on_push.yml
     #   - .github/workflows/build_toolchain.yml
